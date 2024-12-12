@@ -1,0 +1,36 @@
+# Each group of lines below (separated by a blank line) is a test case.
+#
+# This is a comment.
+#
+# The first line is a root property schema, the second line is the expected
+# grammar.
+
+# Default
+{}
+root ::= value;
+
+# Basic Array
+{"properties": {"a": {"type": "array", "items": {"type": "string"}}}}
+root_tuple_0 ::= string;
+root_a       ::= "[" ( root_tuple_0 )* "]";
+root         ::= "{" "a" ":" root_a "}";
+
+# Basic Objects
+{"properties": {"e": {}}}
+root_e ::= value;
+root   ::= "{" "e" ":" root_e "}";
+
+# Basic Object with nested object
+{"properties": {"o": {"type": "object", "properties": {"e": {}}}}}
+root_o_e ::= value;
+root_o   ::= "{" "e" ":" root_o_e "}";
+root     ::= "{" "o" ":" root_o "}";
+
+# Basic non-Object
+{"type": "boolean"}
+root ::= boolean;
+
+# TODO: Implement support for number constraints.
+{"properties": {"n": {"type": "number", "minimum": 123, "maximum": 4567}}}
+root_n ::= number;
+root   ::= "{" "n" ":" root_n "}";
